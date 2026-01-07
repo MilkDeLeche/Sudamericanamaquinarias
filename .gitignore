@@ -1,0 +1,9 @@
+# Video files (too large for GitHub)
+video/*.mp4
+video/*.mov
+video/*.avi
+
+# OS files
+.DS_Store
+Thumbs.db
+
