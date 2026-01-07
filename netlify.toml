@@ -1,0 +1,11 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/contact.php"
+  to = "/contact.html"
+  status = 301
+
+[context.production.environment]
+  CONTACT_EMAIL = "contacto@Sudamericanamaquinarias.com"
+
