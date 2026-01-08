@@ -134,11 +134,10 @@
                         <h3 class="marg">Contáctanos</h3>
                         <p>Para cotizar, preguntas mandanos por email.</p>
                         <!-- Contact Form of the page -->
-                        <form name="contact" method="POST" action="https://api.web3forms.com/submit" class="contact-form">
+                        <form name="contact" method="POST" action="https://api.web3forms.com/submit" class="contact-form" id="contact-form">
                             <input type="hidden" name="access_key" value="26cc995a-cfc2-4d4b-8ff8-9dde955a9a33">
                             <input type="hidden" name="subject" value="Nuevo mensaje de contacto - Sudamericana Maquinarias">
                             <input type="hidden" name="from_name" value="Formulario de Contacto">
-                            <input type="hidden" name="redirect" value="/thank-you.html">
                             <input type="checkbox" name="botcheck" class="hidden" style="display: none; position: absolute; left: -9999px;" tabindex="-1" autocomplete="off">
                             <fieldset>
                                 <div class="form-group">
@@ -150,9 +149,46 @@
                                     </div>
                                 </div>
                                 <textarea class="form-control" name="message" placeholder="Tu mensaje" required></textarea>
-                                <button type="submit" class="btn text-uppercase text-center md-round">Contactar</button>
+                                <button type="submit" class="btn text-uppercase text-center md-round" id="submit-btn">Contactar</button>
                             </fieldset>
                         </form>
+                        
+                        <script>
+                        document.getElementById('contact-form').addEventListener('submit', function(e) {
+                            e.preventDefault();
+                            
+                            const form = this;
+                            const formData = new FormData(form);
+                            const submitButton = document.getElementById('submit-btn');
+                            const originalText = submitButton.textContent;
+                            
+                            // Show loading state
+                            submitButton.textContent = 'Enviando...';
+                            submitButton.disabled = true;
+                            
+                            fetch('https://api.web3forms.com/submit', {
+                                method: 'POST',
+                                body: formData
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    // Redirect to thank you page
+                                    window.location.href = '/thank-you.html';
+                                } else {
+                                    alert('Hubo un error al enviar el mensaje. Por favor intenta nuevamente.');
+                                    submitButton.textContent = originalText;
+                                    submitButton.disabled = false;
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert('Hubo un error al enviar el mensaje. Por favor intenta nuevamente.');
+                                submitButton.textContent = originalText;
+                                submitButton.disabled = false;
+                            });
+                        });
+                        </script>
                     </div>
                 </div>
             </section>
